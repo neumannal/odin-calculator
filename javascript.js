@@ -1,5 +1,5 @@
 let numberLeft = "";
-let operator = "";
+let operatorSign = "";
 let numberRight = "";
 
 function add(a, b) {
@@ -30,3 +30,30 @@ function operate(operator, number1, number2) {
             return divide(+number1, +number2);
    }
 }
+
+function buttonClick (event) {
+    let target = event.target;
+
+    switch (target.className) {
+        case "number":
+            if (numberLeft) {
+                numberRight = target.textContent;
+                display.textContent = numberRight;
+            } else {
+                numberLeft = target.textContent;
+                display.textContent = numberRight
+            }
+            break;
+        case "operator":
+            display.textContent = "operator"
+            break;
+        case "supplemental":
+            display.textContent = "supp";
+            break;
+    }
+
+}
+
+const display = document.querySelector(".display");
+const buttonContainer = document.querySelector(".buttons");
+buttonContainer.addEventListener("click", buttonClick);
