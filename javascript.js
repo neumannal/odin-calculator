@@ -15,6 +15,9 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
+    if (b == 0) {
+        return "don't do that!"
+    }
     return a / b;
 }
 
@@ -27,6 +30,10 @@ function operate(operator, number1, number2) {
         case "*":
             return multiply(+number1, +number2);
         case "/":
+            if (number2 == 0) {
+                window.alert("You tried to divide by zero, stop that! We've set the answer to 42.");
+                return 42;
+            }
             return divide(+number1, +number2);
    }
 }
@@ -36,21 +43,37 @@ function buttonClick (event) {
 
     switch (target.className) {
         case "number":
-            if (numberLeft) {
+            if (numberLeft && operatorSign) {
                 numberRight = target.textContent;
                 display.textContent = numberRight;
             } else {
                 numberLeft = target.textContent;
-                display.textContent = numberRight
+                display.textContent = numberLeft;
             }
             break;
         case "operator":
-            display.textContent = "operator"
+            if (numberRight){
+                numberLeft = operate(operatorSign, numberLeft, numberRight);
+                display.textContent = Math.round(numberLeft*1000) / 1000;
+                operatorSign = "";
+                numberRight = "";
+            }
+            if (target.id != "equal") {
+                operatorSign = target.textContent;
+            }
             break;
         case "supplemental":
-            display.textContent = "supp";
+            switch (target.id) {
+                case "ac":
+                    numberLeft = "";
+                    operatorSign = "";
+                    numberRight = "";
+                    display.textContent = "";
+            }
             break;
     }
+
+    console.log(`${numberLeft} ${operatorSign} ${numberRight}`);
 
 }
 
