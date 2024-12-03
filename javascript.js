@@ -38,23 +38,44 @@ function operate(operator, number1, number2) {
    }
 }
 
+function displayNumber () {
+    if (numberRight) {
+        display.textContent = Math.round(numberRight*1000)/1000;
+    } else {
+        display.textContent = Math.round(numberLeft*1000)/1000;
+    }
+}
+
+function addItemToNumber (number) {
+    if (numberRight || operatorSign) {
+        numberRight += number;
+    } else {
+        numberLeft += number;
+    }
+}
+
+function addDotToNumber () {
+    if ((numberRight) && (!numberRight.includes("."))) {
+        numberRight += ".";
+    } else if ((!numberRight) && (operatorSign)) {
+        numberRight = "0.";
+    } else if ((!operatorSign) && (!numberLeft.includes("."))) {
+        numberLeft += ".";
+    } else if (!numberLeft && !operatorSign) {
+        numberLeft = "0.";
+    }
+}
+
 function buttonClick (event) {
     let target = event.target;
 
     switch (target.className) {
         case "number":
-            if (numberLeft && operatorSign) {
-                numberRight = target.textContent;
-                display.textContent = numberRight;
-            } else {
-                numberLeft = target.textContent;
-                display.textContent = numberLeft;
-            }
+            addItemToNumber(target.textContent);
             break;
         case "operator":
             if (numberRight){
                 numberLeft = operate(operatorSign, numberLeft, numberRight);
-                display.textContent = Math.round(numberLeft*1000) / 1000;
                 operatorSign = "";
                 numberRight = "";
             }
@@ -69,12 +90,16 @@ function buttonClick (event) {
                     operatorSign = "";
                     numberRight = "";
                     display.textContent = "";
+                    break;
+                case ".":
+                    console.log(".");
+                    addDotToNumber();
             }
             break;
     }
 
     console.log(`${numberLeft} ${operatorSign} ${numberRight}`);
-
+    displayNumber();
 }
 
 const display = document.querySelector(".display");
