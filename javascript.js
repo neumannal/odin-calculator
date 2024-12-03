@@ -16,9 +16,6 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-    if (b == 0) {
-        return "don't do that!"
-    }
     return a / b;
 }
 
@@ -58,7 +55,8 @@ function displayNumber () {
 function fixLeadingZero(number) {
     if (
         (number.charAt(0) == "0") &&
-        (number.charAt(1) != ".")
+        (number.charAt(1) != ".") &&
+        (number !== "0")
     ) {
         return number.slice(1);
     } else {
@@ -166,6 +164,7 @@ function buttonClick (event) {
 }
 
 function keypress (event) {
+    console.log(event);
     switch (event.key) {
         case "1":
         case "2":
@@ -207,6 +206,7 @@ function keypress (event) {
             break;
     }
 
+    console.log(`${numberLeft} ${operatorSign} ${numberRight}`);
     displayNumber();
 }
 
