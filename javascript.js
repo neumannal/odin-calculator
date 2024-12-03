@@ -106,6 +106,34 @@ function removeItemFromNumber () {
     }
 }
 
+function operatorInput (operator, operatorText) {
+    if (numberRight){
+        numberLeft = round( operate(operatorSign, numberLeft, numberRight) ).toString();
+        operatorSign = "";
+        numberRight = "";
+    }
+    if (operator != "equal") {
+        operatorSign = operatorText;
+    }
+}
+
+function supplementalInput ( input ) {
+    switch (input) {
+        case "ac":
+            numberLeft = "0";
+            operatorSign = "";
+            numberRight = "";
+            display.textContent = "";
+            break;
+        case "dot":
+            addDotToNumber();
+            break;
+        case "remove":
+            removeItemFromNumber();
+            break;
+    }
+}
+
 function buttonClick (event) {
     let target = event.target;
 
@@ -114,30 +142,53 @@ function buttonClick (event) {
             addItemToNumber(target.textContent);
             break;
         case "operator":
-            if (numberRight){
-                numberLeft = round( operate(operatorSign, numberLeft, numberRight) ).toString();
-                operatorSign = "";
-                numberRight = "";
-            }
-            if (target.id != "equal") {
-                operatorSign = target.textContent;
-            }
+            operatorInput( target.id, target.textContent );
             break;
         case "supplemental":
-            switch (target.id) {
-                case "ac":
-                    numberLeft = "0";
-                    operatorSign = "";
-                    numberRight = "";
-                    display.textContent = "";
-                    break;
-                case "dot":
-                    addDotToNumber();
-                    break;
-                case "remove":
-                    removeItemFromNumber();
-                    break;
-            }
+            supplementalInput( target.id );
+            break;
+    }
+
+    displayNumber();
+}
+
+function keypress (event) {
+    switch (event.key) {
+        case "1":
+        case "2":
+        case "3":
+        case "4":
+        case "5":
+        case "6":
+        case "7":
+        case "8":
+        case "9":
+        case "0":
+            addItemToNumber( event.key );
+            break;
+        case "Escape":
+            supplementalInput( "ac" );
+            break;
+        case "Backspace":
+            supplementalInput( "remove" );
+            break;
+        case ".":
+            supplementalInput( "dot" );
+            break;
+        case "-":
+            operatorInput( "subtract", event.key );
+            break;
+        case "+":
+            operatorInput( "add", event.key );
+            break;
+        case "*":
+            operatorInput( "multiply", event.key );
+            break;
+        case "/":
+            operatorInput( "divide", event.key );
+            break;
+        case "Enter":
+            operatorInput( "equal", "=" );
             break;
     }
 
@@ -146,4 +197,7 @@ function buttonClick (event) {
 
 const display = document.querySelector(".display");
 const buttonContainer = document.querySelector(".buttons");
+
+// listeners
 buttonContainer.addEventListener("click", buttonClick);
+document.addEventListener("keydown", keypress)
