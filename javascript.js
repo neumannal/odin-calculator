@@ -117,6 +117,14 @@ function operatorInput (operator, operatorText) {
     }
 }
 
+function calculatePercent () {
+    if (numberRight) {
+        numberRight = round(numberRight/100);
+    } else {
+        numberLeft = round(numberLeft/100);
+    }
+}
+
 function supplementalInput ( input ) {
     switch (input) {
         case "ac":
@@ -130,6 +138,9 @@ function supplementalInput ( input ) {
             break;
         case "remove":
             removeItemFromNumber();
+            break;
+        case "percent":
+            calculatePercent();
             break;
     }
 }
@@ -175,6 +186,8 @@ function keypress (event) {
         case ".":
             supplementalInput( "dot" );
             break;
+        case "%":
+            supplementalInput( "percent" );
         case "-":
             operatorInput( "subtract", event.key );
             break;
