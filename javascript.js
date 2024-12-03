@@ -160,6 +160,8 @@ function buttonClick (event) {
             break;
     }
 
+    numberRight = `${numberRight}`;
+    numberLeft = `${numberLeft}`;
     displayNumber();
 }
 
