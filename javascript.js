@@ -1,6 +1,7 @@
 let numberLeft = "0";
 let operatorSign = "";
 let numberRight = "";
+const MAXLENGTH = 8;
 
 function add(a, b) {
     return a + b;
@@ -38,24 +39,44 @@ function operate(operator, number1, number2) {
    }
 }
 
+function round(number) {
+    digitsAfterDot = MAXLENGTH - 2;
+    rounderValue = 10 ** digitsAfterDot
+    return Math.round( number * rounderValue ) / rounderValue;
+}
+
 function displayNumber () {
-    let numberToDisplay = ""
+    let numberToDisplay = "";
     if (numberRight) {
         numberToDisplay = numberRight;
     } else {
         numberToDisplay = numberLeft;
     }
-    if (+numberToDisplay != 0) {
-        numberToDisplay = Math.round(numberToDisplay*10000)/10000;
+    display.textContent = numberToDisplay;
+}
+
+function fixLeadingZero(number) {
+    if (
+        (number.charAt(0) == "0") &&
+        (number.charAt(1) != ".")
+    ) {
+        return number.slice(1);
+    } else {
+        return number;
     }
-    display.textContent = numberToDisplay
 }
 
 function addItemToNumber (number) {
     if (numberRight || operatorSign) {
-        numberRight += number;
+        if ( numberRight.length < MAXLENGTH ) {
+            numberRight += number;
+            numberRight = fixLeadingZero(numberRight);    
+        }
     } else {
-        numberLeft += number;
+        if ( numberLeft.length < MAXLENGTH ) {
+            numberLeft += number;
+            numberLeft = fixLeadingZero(numberLeft);    
+        }
     }
 }
 
@@ -66,8 +87,8 @@ function addDotToNumber () {
         numberRight = "0.";
     } else if ((!operatorSign) && (!numberLeft.includes("."))) {
         numberLeft += ".";
-    } else if (!numberLeft && !operatorSign) {
-        numberLeft = "0dot";
+    } else if ((numberLeft == 0) && (!operatorSign)) {
+        numberLeft = "0.";
     }
 }
 
@@ -80,7 +101,7 @@ function buttonClick (event) {
             break;
         case "operator":
             if (numberRight){
-                numberLeft = operate(operatorSign, numberLeft, numberRight);
+                numberLeft = round( operate(operatorSign, numberLeft, numberRight) ).toString();
                 operatorSign = "";
                 numberRight = "";
             }
@@ -91,19 +112,17 @@ function buttonClick (event) {
         case "supplemental":
             switch (target.id) {
                 case "ac":
-                    numberLeft = "";
+                    numberLeft = "0";
                     operatorSign = "";
                     numberRight = "";
                     display.textContent = "";
                     break;
                 case "dot":
-                    console.log("dot");
                     addDotToNumber();
             }
             break;
     }
 
-    console.log(`${numberLeft} ${operatorSign} ${numberRight}`);
     displayNumber();
 }
 
