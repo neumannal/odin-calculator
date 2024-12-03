@@ -1,4 +1,4 @@
-let numberLeft = "";
+let numberLeft = "0";
 let operatorSign = "";
 let numberRight = "";
 
@@ -39,11 +39,16 @@ function operate(operator, number1, number2) {
 }
 
 function displayNumber () {
+    let numberToDisplay = ""
     if (numberRight) {
-        display.textContent = Math.round(numberRight*1000)/1000;
+        numberToDisplay = numberRight;
     } else {
-        display.textContent = Math.round(numberLeft*1000)/1000;
+        numberToDisplay = numberLeft;
     }
+    if (+numberToDisplay != 0) {
+        numberToDisplay = Math.round(numberToDisplay*10000)/10000;
+    }
+    display.textContent = numberToDisplay
 }
 
 function addItemToNumber (number) {
@@ -62,7 +67,7 @@ function addDotToNumber () {
     } else if ((!operatorSign) && (!numberLeft.includes("."))) {
         numberLeft += ".";
     } else if (!numberLeft && !operatorSign) {
-        numberLeft = "0.";
+        numberLeft = "0dot";
     }
 }
 
@@ -91,8 +96,8 @@ function buttonClick (event) {
                     numberRight = "";
                     display.textContent = "";
                     break;
-                case ".":
-                    console.log(".");
+                case "dot":
+                    console.log("dot");
                     addDotToNumber();
             }
             break;
