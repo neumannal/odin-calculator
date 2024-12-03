@@ -92,6 +92,20 @@ function addDotToNumber () {
     }
 }
 
+function removeItemFromNumber () {
+    if (numberRight) {
+        numberRight = numberRight.slice(0, -1);
+        if ( numberRight == "" ) {
+            numberRight = "0";
+        }
+    } else {
+        numberLeft = numberLeft.slice(0, -1);
+        if ( numberLeft == "" ) {
+            numberLeft = "0";
+        }
+    }
+}
+
 function buttonClick (event) {
     let target = event.target;
 
@@ -119,6 +133,10 @@ function buttonClick (event) {
                     break;
                 case "dot":
                     addDotToNumber();
+                    break;
+                case "remove":
+                    removeItemFromNumber();
+                    break;
             }
             break;
     }
